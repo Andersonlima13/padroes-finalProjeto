@@ -1,4 +1,11 @@
 package org.example.ImovelTipo;
 
-public class AnuncioCasa {
+import org.example.AnuncioController.Anuncio;
+import org.example.AnuncioController.AnuncioImovel;
+
+public class AnuncioCasa implements AnuncioImovel {
+    @Override
+    public void selecionarImovelAnuncio(Anuncio anuncio) {
+
+    }
 }
