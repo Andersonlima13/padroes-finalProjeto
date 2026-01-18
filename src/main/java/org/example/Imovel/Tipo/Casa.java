@@ -2,6 +2,7 @@ package org.example.Imovel.Tipo;
 
 
 import org.example.Imovel.Imovel;
+// objeto concreto de imovel
 
 public class Casa extends Imovel {
 

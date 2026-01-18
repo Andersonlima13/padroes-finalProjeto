@@ -1,7 +1,7 @@
 package org.example.Imovel.Tipo;
 
 import org.example.Imovel.Imovel;
-
+// objeto concreto de imovel
 public class Apartamento extends Imovel {
 
     private int andar;
