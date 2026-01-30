@@ -1,29 +1,26 @@
 package org.example.Imovel;
+// factory - objeto abstrato
 
 import org.example.Anuncio.Anunciavel;
-// imovel aqui seria a classe criadora da factory , possuindo uma interface
-// anunciavel que te permite ter outros criadores
+
 public abstract class Imovel implements Anunciavel {
 
     protected String titulo;
     protected double preco;
+    protected String tipo;
 
-    // TEMPLATE METHOD
-    public final void criarAnuncio() {
-        validarCamposObrigatorios();
-        coletarCamposEspecificos();
-        confirmarCriacao();
+    @Override
+    public String getTitulo() {
+        return titulo;
     }
 
-    protected void validarCamposObrigatorios() {
-        if (titulo == null || preco <= 0) {
-            throw new IllegalStateException("Título e preço são obrigatórios");
-        }
+    @Override
+    public double getPreco() {
+        return preco;
     }
 
-    protected abstract void coletarCamposEspecificos();
-
-    protected void confirmarCriacao() {
-        System.out.println("Anúncio criado com sucesso!");
+    @Override
+    public String getTipo() {
+        return tipo;
     }
 }

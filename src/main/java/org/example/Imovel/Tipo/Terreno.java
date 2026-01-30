@@ -1,9 +1,9 @@
 package org.example.Imovel.Tipo;
 
-import org.example.Imovel.Imovel;
+import org.example.Imovel.ImovelFactory;
 // objeto concreto de imovel
 
-public class Terreno extends Imovel {
+public class Terreno extends ImovelFactory {
 
     private double area;
 

@@ -1,10 +1,10 @@
 package org.example.Imovel.Tipo;
 
 
-import org.example.Imovel.Imovel;
+import org.example.Imovel.ImovelFactory;
 // objeto concreto de imovel
 
-public class Casa extends Imovel {
+public class Casa extends ImovelFactory {
 
     private boolean possuiQuintal;
 

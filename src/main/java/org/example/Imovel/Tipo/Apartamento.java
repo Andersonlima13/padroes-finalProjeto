@@ -1,37 +1,17 @@
 package org.example.Imovel.Tipo;
 
 import org.example.Imovel.Imovel;
-// objeto concreto de imovel
+
 public class Apartamento extends Imovel {
 
-    private int andar;
-    private boolean possuiElevador;
+    private int quartos;
+    private boolean elevador;
 
-    public Apartamento(String titulo, double preco, int andar, boolean possuiElevador) {
+    public Apartamento(String titulo, double preco, int quartos, boolean elevador) {
         this.titulo = titulo;
         this.preco = preco;
-        this.andar = andar;
-        this.possuiElevador = possuiElevador;
-    }
-
-    @Override
-    protected void coletarCamposEspecificos() {
-        System.out.println("🏢 Apartamento no andar " + andar +
-                " | Elevador: " + possuiElevador);
-    }
-
-    @Override
-    public String getTitulo() {
-        return "";
-    }
-
-    @Override
-    public double getPreco() {
-        return 0;
-    }
-
-    @Override
-    public String getTipo() {
-        return "Apartamento";
+        this.tipo = "Apartamento";
+        this.quartos = quartos;
+        this.elevador = elevador;
     }
 }

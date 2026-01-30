@@ -1,5 +1,8 @@
 package org.example.Imovel;
-// interface da nossa factory de imovel
-public interface ImovelFactory {
-    Imovel criarImovel();
+
+import org.example.Anuncio.Anunciavel;
+// imovel aqui seria a classe criadora da factory , possuindo uma interface
+// anunciavel que te permite ter outros criadores
+public abstract class ImovelFactory {
+    public abstract Imovel criarImovel();
 }

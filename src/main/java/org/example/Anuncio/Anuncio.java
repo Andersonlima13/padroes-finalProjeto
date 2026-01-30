@@ -2,37 +2,46 @@ package org.example.Anuncio;
 
 import org.example.Anuncio.State.EstadoAnuncio;
 import org.example.Anuncio.State.RascunhoState;
-import org.example.Imovel.Imovel;
-
-
-// anuncio é a entidade que serve para rf01 e rf02
-
-
 
 public class Anuncio {
 
-    private Imovel imovel;
+    private Anunciavel item;        // imóvel, carro, etc
+    private EstadoAnuncio estado;    // STATE
     private String titulo;
-    private EstadoAnuncio estado;
 
-    public Anuncio(Imovel imovel, String titulo) {
-        this.imovel = imovel;
+    public Anuncio(Anunciavel item, String titulo) {
+        this.item = item;
         this.titulo = titulo;
         this.estado = new RascunhoState(); // estado inicial
     }
 
-    // === STATE ===
+    // =========================
+    // DADOS DO ANÚNCIO
+    // =========================
+    public Anunciavel getItem() {
+        return item;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    // =========================
+    // STATE (Context)
+    // =========================
     public void setEstado(EstadoAnuncio novoEstado) {
         this.estado = novoEstado;
-       // notificarMudancaEstado();
-       //  registrarLog();
+        // notificarMudancaEstado();
+        // registrarLog();
     }
 
     public EstadoAnuncio getEstado() {
         return estado;
     }
 
-    // === Ações delegadas ===
+    // =========================
+    // AÇÕES DE CICLO DE VIDA
+    // =========================
     public void enviarParaModeracao() {
         estado.enviarParaModeracao(this);
     }
@@ -43,9 +52,5 @@ public class Anuncio {
 
     public void suspender() {
         estado.suspender(this);
-    }
-
-    public EstadoAnuncio getStatus() {
-        return estado;
     }
 }
