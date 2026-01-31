@@ -1,6 +1,7 @@
 package org.example.Imovel.Tipo;
 
 import org.example.Imovel.Imovel;
+import org.example.Imovel.ImovelFactory;
 
 public class Apartamento extends Imovel {
 
@@ -14,4 +15,5 @@ public class Apartamento extends Imovel {
         this.quartos = quartos;
         this.elevador = elevador;
     }
+
 }

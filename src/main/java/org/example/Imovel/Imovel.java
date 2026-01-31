@@ -1,5 +1,4 @@
 package org.example.Imovel;
-// factory - objeto abstrato
 
 import org.example.Anuncio.Anunciavel;
 

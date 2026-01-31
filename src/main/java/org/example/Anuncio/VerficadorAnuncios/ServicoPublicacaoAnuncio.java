@@ -1,7 +1,6 @@
 package org.example.Anuncio.VerficadorAnuncios;
 
 import org.example.Anuncio.Anuncio;
-import org.example.Anuncio.VerficadorAnuncios.ModeradorAnuncio;
 
 public class ServicoPublicacaoAnuncio {
 

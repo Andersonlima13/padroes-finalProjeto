@@ -1,9 +1,10 @@
 package org.example.Imovel.Tipo;
 
+import org.example.Imovel.Imovel;
 import org.example.Imovel.ImovelFactory;
 // objeto concreto de imovel
 
-public class Terreno extends ImovelFactory {
+public class Terreno extends Imovel {
 
     private double area;
 
@@ -13,23 +14,20 @@ public class Terreno extends ImovelFactory {
         this.area = area;
     }
 
-    @Override
-    protected void coletarCamposEspecificos() {
-        System.out.println("🌱 Terreno com área de " + area + " m²");
-    }
+
+
 
     @Override
     public String getTitulo() {
         return "";
     }
 
-    @Override
-    public double getPreco() {
-        return 0;
-    }
+
 
     @Override
     public String getTipo() {
         return "Terreno";
     }
+
+
 }
