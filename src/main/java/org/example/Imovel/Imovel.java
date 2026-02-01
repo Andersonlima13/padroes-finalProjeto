@@ -5,17 +5,11 @@ import org.example.Anuncio.Anunciavel;
 public abstract class Imovel implements Anunciavel {
 
     protected String titulo;
-    protected double preco;
-    protected String tipo;
+    protected String tipo; // Casa, Apartamento etc.
 
     @Override
     public String getTitulo() {
         return titulo;
-    }
-
-    @Override
-    public double getPreco() {
-        return preco;
     }
 
     @Override

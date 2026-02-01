@@ -4,7 +4,6 @@ package org.example.Anuncio;
 
 public interface Anunciavel {
     String getTitulo();
-    double getPreco();
     String getTipo();
     boolean temFotos();
 }

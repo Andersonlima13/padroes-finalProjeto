@@ -13,7 +13,7 @@ public class ApartamentoFactory extends ImovelFactory {
         return new Apartamento(
                 "Apartamento Central",
                 350_000,
-                2,
+
                 true
         );
     }

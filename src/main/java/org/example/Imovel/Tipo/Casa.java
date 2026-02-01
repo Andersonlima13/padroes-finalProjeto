@@ -6,9 +6,9 @@ public class Casa extends Imovel {
 
     private boolean possuiQuintal;
 
-    public Casa(String titulo, double preco, boolean possuiQuintal) {
+    public Casa(String titulo,  boolean possuiQuintal) {
         this.titulo = titulo;
-        this.preco = preco;
+
         this.tipo = "Casa";
         this.possuiQuintal = possuiQuintal;
     }

@@ -11,15 +11,21 @@ public class Anuncio {
     private EstadoAnuncio estado;      // STATE
     private String titulo;
     private AnuncioPublisher publisher;
+    private double preco;
+    private TipoNegociacao tipoNegociacao;
 
     public Anuncio(
             Anunciavel item,
             String titulo,
+            double preco,
+            TipoNegociacao tipoNegociacao,
             Anunciante anunciante,
             AnuncioPublisher publisher
     ) {
         this.item = item;
         this.titulo = titulo;
+        this.preco = preco;
+        this.tipoNegociacao = tipoNegociacao;
         this.anunciante = anunciante;
         this.publisher = publisher;
         this.estado = new AnuncioEmRascunho();
@@ -33,7 +39,11 @@ public class Anuncio {
     }
 
     public double getPreco() {
-        return item.getPreco();
+        return preco;
+    }
+
+    public TipoNegociacao getTipoNegociacao() {
+        return tipoNegociacao;
     }
 
     public boolean temFotos() {
@@ -45,7 +55,7 @@ public class Anuncio {
     }
 
     public Anunciavel getItem() {
-        return item;
+        return this.item;
     }
 
     // =========================

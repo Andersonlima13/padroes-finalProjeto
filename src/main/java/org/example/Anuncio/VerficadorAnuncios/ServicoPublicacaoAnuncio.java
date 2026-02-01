@@ -3,7 +3,6 @@ package org.example.Anuncio.VerficadorAnuncios;
 import org.example.Anuncio.Anuncio;
 
 
-import org.example.Pagamento.Plano;
 
 public class ServicoPublicacaoAnuncio {
 
@@ -15,13 +14,20 @@ public class ServicoPublicacaoAnuncio {
 
     public void publicar(Anuncio anuncio) {
         try {
-            anuncio.enviarParaModeracao(); // muda para EM_MODERACAO
+            // 1️⃣ entra em moderação
+            anuncio.enviarParaModeracao();
+
+            // 2️⃣ passa pelo chain
             cadeia.moderar(anuncio);
-            anuncio.publicar();            // muda para ATIVO
+
+            // 3️⃣ aprovado → ativo
+            anuncio.publicar();
+
             System.out.println("📢 Anúncio publicado com sucesso!");
-        } catch (RuntimeException exception) {
-            anuncio.suspender();           // volta para RASCUNHO
-            System.out.println("❌ Moderação falhou: " + exception.getMessage());
+        } catch (RuntimeException e) {
+            // ❌ falha → suspenso
+            anuncio.suspender();
+            System.out.println("❌ Moderação falhou: " + e.getMessage());
         }
     }
 }

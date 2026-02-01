@@ -12,8 +12,7 @@ public class TerrenoFactory extends ImovelFactory {
     public Imovel criarImovel() {
         return new Terreno(
             "terreno",
-                100,
-                20
+                100
         );
     }
 

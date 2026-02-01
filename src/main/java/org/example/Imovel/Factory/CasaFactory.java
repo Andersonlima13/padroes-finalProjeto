@@ -10,7 +10,6 @@ public class CasaFactory extends ImovelFactory {
     public Imovel criarImovel() {
         return new Casa(
                 "Casa com Quintal",
-                450_000,
                 true
         );
     }

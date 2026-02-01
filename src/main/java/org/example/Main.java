@@ -1,7 +1,5 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 import org.example.Usuario.*;
 import org.example.Pagamento.*;
 import org.example.Anuncio.*;
@@ -10,81 +8,156 @@ import org.example.Anuncio.Notificacao.*;
 import org.example.Imovel.Tipo.*;
 import org.example.Anuncio.State.*;
 
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("===== SIMULAÇÃO REAL DO SISTEMA =====");
+        System.out.println("===== SIMULAÇÃO REAL DO SISTEMA =====\n");
 
         // =====================================================
-        // 1️⃣ USUÁRIO ANUNCIANTE
+        // 1️⃣ ANUNCIANTES
         // =====================================================
-        Anunciante proprietario = new Proprietario();
-
-        // =====================================================
-        // 2️⃣ ESCOLHA DO PLANO
-        // =====================================================
-        Plano plano = new PlanoBasico();
-
-        // =====================================================
-        // 3️⃣ PAGAMENTO (Adapter + Strategy)
-        // =====================================================
-        GatewayPagamento gatewayPagamento = new CartaoAdapter();
-        ServicoAssinatura servicoAssinatura =
-                new ServicoAssinatura(gatewayPagamento);
-
-        if (!servicoAssinatura.contratarPlano(plano)) {
-            System.out.println("🚫 Assinatura não concluída.");
-            return;
-        }
-
-        // =====================================================
-        // 4️⃣ CRIAÇÃO DO IMÓVEL (Factory / Produto)
-        // =====================================================
-        Casa casa = new Casa(
-                "Casa com quintal e garagem",
-                420_000.00,
-                true
-
+        Anunciante proprietario = new Proprietario(
+                "João da Silva",
+                "joao@email.com",
+                "1199999-9999",
+                "123.456.789-00"
         );
 
+        Anunciante corretor = new Corretor(
+                "Imobiliária Central",
+                "contato@imobcentral.com",
+                "113333-4444",
+                "12.345.678/0001-99"
+        );
+
+
         // =====================================================
-        // 5️⃣ OBSERVER (Publisher + Subscribers)
+        // 2️⃣ PLANOS + PAGAMENTO
+        // =====================================================
+        Plano planoBasico = new PlanoBasico();
+        GatewayPagamento gateway = new CartaoAdapter();
+        ServicoAssinatura servicoAssinatura = new ServicoAssinatura(gateway);
+
+        System.out.println("🔐 Proprietário contratando plano...");
+        servicoAssinatura.contratarPlano(planoBasico);
+        System.out.println();
+
+        // =====================================================
+        // 3️⃣ OBSERVER (notificações)
         // =====================================================
         AnuncioPublisher publisher = new AnuncioPublisher();
         publisher.adicionar(new NotificadorWhatsApp());
 
         // =====================================================
-        // 6️⃣ CRIAÇÃO DO ANÚNCIO (feito pelo anunciante)
+        // 4️⃣ IMÓVEIS (produtos físicos)
         // =====================================================
-        Anuncio anuncio = new Anuncio(
-                casa,
-                casa.getTitulo(),
+        Casa casaComFotos = new Casa("Casa com quintal", true) {
+            @Override
+            public boolean temFotos() {
+                return true;
+            }
+        };
+
+        Casa casaSemFotos = new Casa("Casa sem fotos", false) {
+            @Override
+            public boolean temFotos() {
+                return false;
+            }
+        };
+
+        Apartamento apartamentoComFotos = new Apartamento(
+                "Apartamento central",
+                3,
+                true
+        ) {
+            @Override
+            public boolean temFotos() {
+                return true;
+            }
+        };
+
+        // =====================================================
+        // 5️⃣ ANÚNCIOS (preço e tipo no ANÚNCIO)
+        // =====================================================
+        Anuncio anuncioVendaValido = new Anuncio(
+                casaComFotos,
+                casaComFotos.getTitulo(),
+                420_000,
+                TipoNegociacao.VENDA,
                 proprietario,
                 publisher
         );
 
-        System.out.println("📌 Anúncio criado por: " + anuncio.getAnunciante());
+        Anuncio anuncioVendaInvalido = new Anuncio(
+                casaSemFotos,
+                casaSemFotos.getTitulo(),
+                380_000,
+                TipoNegociacao.VENDA,
+                proprietario,
+                publisher
+        );
 
+        Anuncio anuncioAluguelValido = new Anuncio(
+                apartamentoComFotos,
+                apartamentoComFotos.getTitulo(),
+                2_500,
+                TipoNegociacao.ALUGUEL,
+                corretor,
+                publisher
+        );
         // =====================================================
-        // 7️⃣ CHAIN OF RESPONSIBILITY
+        // 6️⃣ CHAIN OF RESPONSIBILITY
         // =====================================================
         ModeradorAnuncio fotos = new VerificadorFotos();
         ModeradorAnuncio palavras = new VerificadorPalavras();
 
         fotos.setProximo(palavras);
 
-        // =====================================================
-        // 8️⃣ SERVIÇO DE PUBLICAÇÃO
-        // =====================================================
         ServicoPublicacaoAnuncio servicoPublicacao =
                 new ServicoPublicacaoAnuncio(fotos);
 
         // =====================================================
-        // 9️⃣ PUBLICAÇÃO
+        // 7️⃣ PUBLICAÇÕES (com sucesso e erro)
         // =====================================================
-        servicoPublicacao.publicar(anuncio);
+        System.out.println("🔎 Publicando anúncio de VENDA (válido)...");
+        servicoPublicacao.publicar(anuncioVendaValido);
+        System.out.println();
 
-        System.out.println("===== FIM DA SIMULAÇÃO =====");
+        System.out.println("🔎 Publicando anúncio de VENDA (inválido)...");
+        servicoPublicacao.publicar(anuncioVendaInvalido);
+        System.out.println();
+
+        System.out.println("🔎 Publicando anúncio de ALUGUEL (válido)...");
+        servicoPublicacao.publicar(anuncioAluguelValido);
+        System.out.println();
+
+        // =====================================================
+        // 8️⃣ CONSULTA FINAL (integridade dos dados)
+        // =====================================================
+        System.out.println("===== CONSULTA DOS ANÚNCIOS =====");
+
+        List<Anuncio> anuncios = List.of(
+                anuncioVendaValido,
+                anuncioVendaInvalido,
+                anuncioAluguelValido
+        );
+
+        for (Anuncio a : anuncios) {
+            System.out.println("----------------------------------");
+            System.out.println("Título: " + a.getTitulo());
+            System.out.println("Tipo imóvel: " + a.getItem().getTipo());
+            System.out.println("Preço anúncio: R$ " + a.getPreco());
+            System.out.println("Tipo negociação: " + a.getTipoNegociacao());
+            System.out.println("Tem fotos? " + a.temFotos());
+            System.out.println("Estado atual: " +
+                    a.getEstado().getClass().getSimpleName());
+            System.out.println("Anunciante: " +
+                    a.getAnunciante().getNome());
+        }
+
+        System.out.println("\n===== FIM DA SIMULAÇÃO =====");
     }
 }
