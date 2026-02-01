@@ -12,4 +12,9 @@ public class Casa extends Imovel {
         this.tipo = "Casa";
         this.possuiQuintal = possuiQuintal;
     }
+
+    @Override
+    public boolean temFotos() {
+        return true;
+    }
 }

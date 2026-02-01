@@ -29,5 +29,10 @@ public class Terreno extends Imovel {
         return "Terreno";
     }
 
+    @Override
+    public boolean temFotos() {
+        return false;
+    }
+
 
 }

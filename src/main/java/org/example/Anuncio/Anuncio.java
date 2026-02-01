@@ -2,21 +2,31 @@ package org.example.Anuncio;
 
 import org.example.Anuncio.State.AnuncioEmRascunho;
 import org.example.Anuncio.State.EstadoAnuncio;
+import org.example.Usuario.Anunciante;
 
 public class Anuncio {
 
-    private Anuncio item;
-    private EstadoAnuncio estado;
+    private Anunciavel item;          // imóvel, carro, etc
+    private Anunciante anunciante;     // dono do anúncio
+    private EstadoAnuncio estado;      // STATE
     private String titulo;
+    private AnuncioPublisher publisher;
 
-    public Anuncio(Anuncio item, String titulo ) {
+    public Anuncio(
+            Anunciavel item,
+            String titulo,
+            Anunciante anunciante,
+            AnuncioPublisher publisher
+    ) {
         this.item = item;
         this.titulo = titulo;
+        this.anunciante = anunciante;
+        this.publisher = publisher;
         this.estado = new AnuncioEmRascunho();
     }
 
     // =========================
-    // DADOS
+    // DADOS DO ANÚNCIO
     // =========================
     public String getTitulo() {
         return titulo;
@@ -30,15 +40,31 @@ public class Anuncio {
         return item.temFotos();
     }
 
-    // =========================
-    // STATE
-    // =========================
-    public void setEstado(EstadoAnuncio novoEstado) {
-        this.estado = novoEstado;
-        // notificarMudancaEstado();
-        // registrarLog();
+    public Anunciante getAnunciante() {
+        return anunciante;
     }
 
+    public Anunciavel getItem() {
+        return item;
+    }
+
+    // =========================
+    // STATE (Context)
+    // =========================
+    public EstadoAnuncio getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoAnuncio novoEstado) {
+        this.estado = novoEstado;
+
+        // 🔔 Observer notificado a cada mudança de estado
+        publisher.notificarTodos(this, novoEstado);
+    }
+
+    // =========================
+    // CICLO DE VIDA
+    // =========================
     public void enviarParaModeracao() {
         estado.enviarParaModeracao(this);
     }
@@ -49,13 +75,5 @@ public class Anuncio {
 
     public void suspender() {
         estado.suspender(this);
-    }
-
-    public Anuncio getItem() {
-        return  this.getItem();
-    }
-
-    public Object getEstado() {
-        return this.estado;
     }
 }

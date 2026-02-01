@@ -16,4 +16,8 @@ public class Apartamento extends Imovel {
         this.elevador = elevador;
     }
 
+    @Override
+    public boolean temFotos() {
+        return false;
+    }
 }
