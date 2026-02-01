@@ -9,14 +9,12 @@ public abstract class ModeradorBase implements ModeradorAnuncio {
     @Override
     public ModeradorAnuncio setProximo(ModeradorAnuncio proximo) {
         this.proximo = proximo;
-        return proximo; // permite encadeamento fluente
+        return proximo;
     }
 
     protected void passarParaProximo(Anuncio anuncio) {
         if (proximo != null) {
             proximo.moderar(anuncio);
-        } else {
-            System.out.println("✅ Anúncio aprovado em todas as validações.");
         }
     }
 }

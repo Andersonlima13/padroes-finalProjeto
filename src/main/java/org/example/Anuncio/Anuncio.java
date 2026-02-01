@@ -1,33 +1,37 @@
 package org.example.Anuncio;
 
+import org.example.Anuncio.State.AnuncioEmRascunho;
 import org.example.Anuncio.State.EstadoAnuncio;
-import org.example.Anuncio.State.RascunhoState;
 
 public class Anuncio {
 
-    private Anunciavel item;        // imóvel, carro, etc
-    private EstadoAnuncio estado;    // STATE
+    private Anuncio item;
+    private EstadoAnuncio estado;
     private String titulo;
 
-    public Anuncio(Anunciavel item, String titulo) {
+    public Anuncio(Anuncio item, String titulo ) {
         this.item = item;
         this.titulo = titulo;
-        this.estado = new RascunhoState(); // estado inicial
+        this.estado = new AnuncioEmRascunho();
     }
 
     // =========================
-    // DADOS DO ANÚNCIO
+    // DADOS
     // =========================
-    public Anunciavel getItem() {
-        return item;
-    }
-
     public String getTitulo() {
         return titulo;
     }
 
+    public double getPreco() {
+        return item.getPreco();
+    }
+
+    public boolean temFotos() {
+        return item.temFotos();
+    }
+
     // =========================
-    // STATE (Context)
+    // STATE
     // =========================
     public void setEstado(EstadoAnuncio novoEstado) {
         this.estado = novoEstado;
@@ -35,13 +39,6 @@ public class Anuncio {
         // registrarLog();
     }
 
-    public EstadoAnuncio getEstado() {
-        return estado;
-    }
-
-    // =========================
-    // AÇÕES DE CICLO DE VIDA
-    // =========================
     public void enviarParaModeracao() {
         estado.enviarParaModeracao(this);
     }
@@ -52,5 +49,13 @@ public class Anuncio {
 
     public void suspender() {
         estado.suspender(this);
+    }
+
+    public Anuncio getItem() {
+        return  this.getItem();
+    }
+
+    public Object getEstado() {
+        return this.estado;
     }
 }

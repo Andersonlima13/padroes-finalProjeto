@@ -2,7 +2,7 @@ package org.example.Anuncio.State;
 
 import org.example.Anuncio.Anuncio;
 
-public class PublicadoState implements EstadoAnuncio {
+public class AnuncioVendido implements EstadoAnuncio {
 
     @Override
     public void enviarParaModeracao(Anuncio anuncio) {
@@ -16,7 +16,7 @@ public class PublicadoState implements EstadoAnuncio {
 
     @Override
     public void suspender(Anuncio anuncio) {
-        anuncio.setEstado(new RascunhoState());
+        anuncio.setEstado(new AnuncioAtivo());
     }
 
     // 💡 Comportamentos futuros

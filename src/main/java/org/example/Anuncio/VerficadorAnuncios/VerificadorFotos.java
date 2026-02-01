@@ -10,7 +10,6 @@ public class VerificadorFotos extends ModeradorBase {
             throw new RuntimeException("❌ Anúncio precisa de ao menos uma foto.");
         }
 
-        System.out.println("✔ Fotos verificadas.");
         passarParaProximo(anuncio);
     }
 }
