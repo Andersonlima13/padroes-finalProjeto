@@ -6,9 +6,10 @@ import org.example.Config.ConfiguracaoSistema;
 
 public class AnuncioEmModeracao implements EstadoAnuncio {
 
+
     @Override
     public void enviarParaModeracao(Anuncio anuncio) {
-        throw new IllegalStateException("⚠️ Já está em moderação.");
+        throw new IllegalStateException("Anuncio ja esta em moderacao");
     }
 
     @Override
@@ -19,7 +20,6 @@ public class AnuncioEmModeracao implements EstadoAnuncio {
 
         double preco = anuncio.getPreco();
 
-        // 🔎 Regras de preço centralizadas
         if (preco > config.getPrecoMax()) {
             anuncio.setEstado(new AnuncioSuspenso());
             throw new IllegalStateException("❌ Preço acima do permitido.");
@@ -39,7 +39,6 @@ public class AnuncioEmModeracao implements EstadoAnuncio {
             throw new IllegalStateException("❌ Preço abaixo do mínimo para aluguel.");
         }
 
-        // ✔ Tudo OK → publica
         anuncio.setEstado(new AnuncioAtivo());
     }
 

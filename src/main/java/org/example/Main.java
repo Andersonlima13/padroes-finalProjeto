@@ -1,25 +1,69 @@
 package org.example;
 
-import org.example.Anuncio.FiltroDeBusca.*;
-import org.example.Usuario.*;
-import org.example.Pagamento.*;
 import org.example.Anuncio.*;
-import org.example.Anuncio.VerficadorAnuncios.*;
+import org.example.Anuncio.FiltroDeBusca.*;
 import org.example.Anuncio.Notificacao.*;
-import org.example.Imovel.Tipo.*;
 import org.example.Anuncio.State.*;
+import org.example.Anuncio.VerficadorAnuncios.*;
+
+import org.example.Config.ConfiguracaoSistema;
+
+import org.example.Imovel.Factory.*;
+import org.example.Imovel.Imovel;
+
+import org.example.Pagamento.*;
+import org.example.Usuario.*;
 
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         System.out.println("===== SIMULAÇÃO REAL DO SISTEMA =====\n");
 
         // =====================================================
-        // 1️⃣ ANUNCIANTES
+        // RF07 - SINGLETON (Configurações do Sistema)
         // =====================================================
+        System.out.println("⚙️ RF07 - Singleton (Configurações)");
+
+        ConfiguracaoSistema cfg = ConfiguracaoSistema.getInstancia();
+
+        System.out.println("Sistema carregado: " + cfg.isCarregadoComSucesso());
+        System.out.println("Preço mínimo venda: " + cfg.getPrecoMinVenda());
+        System.out.println("Preço mínimo aluguel: " + cfg.getPrecoMinAluguel());
+        System.out.println("Termos proibidos: " + cfg.getTermosProibidos());
+        System.out.println("Canal notificação padrão: " + cfg.getCanalNotificacaoPadrao());
+
+        Thread.sleep(1200);
+
+        // =====================================================
+        // RF08 - ADAPTER (Planos e Pagamento)
+        // =====================================================
+        System.out.println("\n💳 RF08 - Adapter (Pagamentos e Planos)");
+
+        Plano planoBasico = new PlanoBasico();
+        Plano planoPremium = new PlanoPremium();
+
+        ServicoAssinatura pagamentoPix =
+                new ServicoAssinatura(new PixAdapter());
+
+        ServicoAssinatura pagamentoCartao =
+                new ServicoAssinatura(new CartaoAdapter());
+
+        System.out.println("Comprador contratando Plano Básico via PIX");
+        pagamentoPix.contratarPlano(planoBasico);
+
+        System.out.println("\nInquilino contratando Plano Premium via CARTÃO");
+        pagamentoCartao.contratarPlano(planoPremium);
+
+        Thread.sleep(1200);
+
+        // =====================================================
+        // RF01 - ANUNCIANTES
+        // =====================================================
+        System.out.println("\n🧑 RF01 - Anunciantes");
+
         Anunciante proprietario = new Proprietario(
                 "João da Silva",
                 "joao@email.com",
@@ -29,206 +73,248 @@ public class Main {
 
         Anunciante corretor = new Corretor(
                 "Imobiliária Central",
-                "contato@imobcentral.com",
+                "contato@imob.com",
                 "113333-4444",
                 "12.345.678/0001-99"
         );
 
+        System.out.println("Anunciantes criados:");
+        System.out.println("✔ Proprietário: João da Silva | Email: joao@email.com");
+        System.out.println("✔ Corretor: Imobiliária Central | Email: contato@imob.com");
+
+        Thread.sleep(1200);
 
         // =====================================================
-        // 2️⃣ PLANOS + PAGAMENTO
+        // RF02 - FACTORY METHOD (Imóveis padrão)
         // =====================================================
-        Plano planoBasico = new PlanoBasico();
-        GatewayPagamento gateway = new CartaoAdapter();
-        ServicoAssinatura servicoAssinatura = new ServicoAssinatura(gateway);
+        System.out.println("\n🏠 RF02 - Factory Method");
 
-        System.out.println("🔐 Proprietário contratando plano...");
-        servicoAssinatura.contratarPlano(planoBasico);
-        System.out.println();
+        Imovel casaPadrao = new CasaFactory().criarImovel();
+        Imovel apPadrao = new ApartamentoFactory().criarImovel();
+        Imovel terrenoPadrao = new TerrenoFactory().criarImovel();
+
+        System.out.println("Imóveis criados via Factory:");
+        System.out.println("✔ " + casaPadrao.getTitulo() + " | Tipo: Casa");
+        System.out.println("✔ " + apPadrao.getTitulo() + " | Tipo: Apartamento");
+        System.out.println("✔ " + terrenoPadrao.getTitulo() + " | Tipo: Terreno");
+
+        Thread.sleep(1200);
 
         // =====================================================
-        // 3️⃣ OBSERVER (notificações)
+        // OBSERVER (Publisher)
         // =====================================================
         AnuncioPublisher publisher = new AnuncioPublisher();
         publisher.adicionar(new NotificadorWhatsApp());
+        publisher.adicionar(new NotificadorEmail());
 
         // =====================================================
-        // 4️⃣ IMÓVEIS (produtos físicos)
+        // RF01 + RF02 - CRIAÇÃO DOS ANÚNCIOS
         // =====================================================
-        Casa casaComFotos = new Casa("Casa com quintal", true) {
-            @Override
-            public boolean temFotos() {
-                return true;
-            }
-        };
-
-        Casa casaSemFotos = new Casa("Casa sem fotos", false) {
-            @Override
-            public boolean temFotos() {
-                return false;
-            }
-        };
-
-        Apartamento apartamentoComFotos = new Apartamento(
-                "Apartamento central",
-                3,
-                true
-        ) {
-            @Override
-            public boolean temFotos() {
-                return true;
-            }
-        };
-
-        // =====================================================
-        // 5️⃣ ANÚNCIOS (preço e tipo no ANÚNCIO)
-        // =====================================================
-        Anuncio anuncioVendaValido = new Anuncio(
-                casaComFotos,
-                casaComFotos.getTitulo(),
+        Anuncio anuncioCasa = new Anuncio(
+                casaPadrao,
+                casaPadrao.getTitulo(),
                 420_000,
                 TipoNegociacao.VENDA,
                 proprietario,
                 publisher
         );
 
-        Anuncio anuncioVendaInvalido = new Anuncio(
-                casaSemFotos,
-                casaSemFotos.getTitulo(),
+        Anuncio anuncioApartamento = new Anuncio(
+                apPadrao,
+                apPadrao.getTitulo(),
+                2_500,
+                TipoNegociacao.ALUGUEL,
+                corretor,
+                publisher
+        );
+
+        Anuncio anuncioTerreno = new Anuncio(
+                terrenoPadrao,
+                terrenoPadrao.getTitulo(),
+                300_000,
+                TipoNegociacao.VENDA,
+                proprietario,
+                publisher
+        );
+
+        System.out.println("Anúncios criados:");
+        System.out.println("✔ " + anuncioCasa.getTitulo()
+                + " | VENDA | R$ 420000 | Estado: "
+                + anuncioCasa.getEstado().getClass().getSimpleName());
+
+        System.out.println("✔ " + anuncioApartamento.getTitulo()
+                + " | ALUGUEL | R$ 2500 | Estado: "
+                + anuncioApartamento.getEstado().getClass().getSimpleName());
+
+        System.out.println("✔ " + anuncioTerreno.getTitulo()
+                + " | VENDA | R$ 300000 | Estado: "
+                + anuncioTerreno.getEstado().getClass().getSimpleName());
+
+        List<Anuncio> anuncios = List.of(
+                anuncioCasa,
+                anuncioApartamento,
+                anuncioTerreno
+        );
+
+        Thread.sleep(1200);
+
+        // =====================================================
+        // RF03 - CHAIN OF RESPONSIBILITY (Publicação)
+        // =====================================================
+        System.out.println("\n🛂 RF03 - Publicação de Anúncios");
+
+        ModeradorAnuncio verificadorFotos = new VerificadorFotos();
+        ModeradorAnuncio verificadorPalavras = new VerificadorPalavras();
+
+        verificadorFotos.setProximo(verificadorPalavras);
+
+        ServicoPublicacaoAnuncio publicador =
+                new ServicoPublicacaoAnuncio(verificadorFotos);
+
+        publicador.publicar(anuncioCasa);
+        publicador.publicar(anuncioApartamento);
+        publicador.publicar(anuncioTerreno);
+
+        Thread.sleep(1200);
+
+
+
+
+        // =====================================================
+        // RF04 - STATE (Ciclo de Vida – sem transições ilegais)
+        // =====================================================
+        System.out.println("\n🔄 RF04 - State (Ciclo de Vida)");
+
+        System.out.println("Estado anúncio casa: " +
+                anuncioCasa.getEstado().getClass().getSimpleName());
+
+        System.out.println("Estado anúncio apartamento: " +
+                anuncioApartamento.getEstado().getClass().getSimpleName());
+
+        System.out.println("Estado anúncio terreno: " +
+                anuncioTerreno.getEstado().getClass().getSimpleName());
+
+        Thread.sleep(1200);
+
+        // =====================================================
+        // RF03 (NOVAMENTE) - ATIVO → VENDIDO
+        // =====================================================
+        System.out.println("\n🏷️ RF03 - Encerramento de Anúncio");
+
+        anuncioCasa.vender();
+
+        System.out.println("Novo estado anúncio casa: " +
+                anuncioCasa.getEstado().getClass().getSimpleName());
+
+        Thread.sleep(1200);
+
+        // =====================================================
+        // RF05 - OBSERVER (com anúncio novo, sem conflito)
+        // =====================================================
+        System.out.println("\n📢 RF05 - Observer em ação");
+
+        Anuncio anuncioObserver = new Anuncio(
+                casaPadrao,
+                "Casa Observer",
+                500_000,
+                TipoNegociacao.VENDA,
+                proprietario,
+                publisher
+        );
+
+        anuncioObserver.enviarParaModeracao();
+        anuncioObserver.publicar();
+        anuncioObserver.vender();
+
+        Thread.sleep(1200);
+
+
+
+        // =====================================================
+// RF01 + RF02 + RF03 - ANÚNCIOS ATIVOS PARA BUSCA (RF06)
+// =====================================================
+        System.out.println("\n🟢 Anúncios extras (ativos) para busca");
+
+// Reaproveitando factories existentes
+        Imovel casaBusca = new CasaFactory().criarImovel();
+        Imovel apBusca   = new ApartamentoFactory().criarImovel();
+
+// Criando anúncios
+        Anuncio anuncioCasaBusca = new Anuncio(
+                casaBusca,
+                "Casa Ativa para Busca",
                 380_000,
                 TipoNegociacao.VENDA,
                 proprietario,
                 publisher
         );
 
-        Anuncio anuncioAluguelValido = new Anuncio(
-                apartamentoComFotos,
-                apartamentoComFotos.getTitulo(),
-                2_500,
+        Anuncio anuncioApBusca = new Anuncio(
+                apBusca,
+                "Apartamento Ativo para Busca",
+                3_000,
                 TipoNegociacao.ALUGUEL,
                 corretor,
                 publisher
         );
-        // =====================================================
-        // 6️⃣ CHAIN OF RESPONSIBILITY
-        // =====================================================
-        ModeradorAnuncio fotos = new VerificadorFotos();
-        ModeradorAnuncio palavras = new VerificadorPalavras();
 
-        fotos.setProximo(palavras);
+// Publicando (ficam ATIVOS)
+        publicador.publicar(anuncioCasaBusca);
+        publicador.publicar(anuncioApBusca);
 
-        ServicoPublicacaoAnuncio servicoPublicacao =
-                new ServicoPublicacaoAnuncio(fotos);
-
-        // =====================================================
-        // 7️⃣ PUBLICAÇÕES (com sucesso e erro)
-        // =====================================================
-        System.out.println("🔎 Publicando anúncio de VENDA (válido)...");
-        servicoPublicacao.publicar(anuncioVendaValido);
-        System.out.println();
-
-        System.out.println("🔎 Publicando anúncio de VENDA (inválido)...");
-        servicoPublicacao.publicar(anuncioVendaInvalido);
-        System.out.println();
-
-        System.out.println("🔎 Publicando anúncio de ALUGUEL (válido)...");
-        servicoPublicacao.publicar(anuncioAluguelValido);
-        System.out.println();
-
-        // =====================================================
-        // 8️⃣ CONSULTA FINAL (integridade dos dados)
-        // =====================================================
-        System.out.println("===== CONSULTA DOS ANÚNCIOS =====");
-
-        List<Anuncio> anuncios = List.of(
-                anuncioVendaValido,
-                anuncioVendaInvalido,
-                anuncioAluguelValido
+// Lista final usada na busca
+        List<Anuncio> anunciosParaBusca = List.of(
+                anuncioCasaBusca,
+                anuncioApBusca
         );
 
-        for (Anuncio a : anuncios) {
-            System.out.println("----------------------------------");
-            System.out.println("Título: " + a.getTitulo());
-            System.out.println("Tipo imóvel: " + a.getItem().getTipo());
-            System.out.println("Preço anúncio: R$ " + a.getPreco());
-            System.out.println("Tipo negociação: " + a.getTipoNegociacao());
-            System.out.println("Tem fotos? " + a.temFotos());
-            System.out.println("Estado atual: " +
-                    a.getEstado().getClass().getSimpleName());
-            System.out.println("Anunciante: " +
-                    a.getAnunciante().getNome());
-        }
+        Thread.sleep(1200);
 
 
-        // =====================================================
-// 9️⃣ BUSCA DE USUÁRIO COMUM (DECORATOR)
+
+
+
 // =====================================================
+// =====================================================
+// RF06 - DECORATOR (Busca Avançada COM filtros)
+// =====================================================
+        System.out.println("\n🔍 RF06 - Busca com Filtros");
 
-        System.out.println("\n===== BUSCA DE ANÚNCIOS (USUÁRIO COMUM) =====");
-
-// 🔹 Montagem dos filtros (Decorator)
-        FiltroBusca filtroBusca = new FiltroPrecoMinimo(
-                new FiltroPrecoMaximo(
-                        new FiltroPorImovel(
-                                new BuscaBase(),
-                                "Casa"
+        FiltroBusca filtroComDecorator =
+                new FiltroPrecoMinimo(
+                        new FiltroPorTipo(
+                                new FiltroPorImovel(
+                                        new BuscaBase(),
+                                        "Casa"
+                                ),
+                                TipoNegociacao.VENDA
                         ),
-                        500_000
-                ),
-                300_000
-        );
+                        300_000
+                );
 
-// 🔹 Serviço de busca
-        ServicoBusca servicoBusca = new ServicoBusca(filtroBusca);
+        ServicoBusca servicoBuscaFiltrada = new ServicoBusca(filtroComDecorator);
 
-// 🔹 Usuário comum
-        Comprador comprador = new Comprador(
-                servicoBusca,
+        Comprador compradorFiltrado = new Comprador(
+                servicoBuscaFiltrada,
                 "Carlos Comprador",
                 "carlos@email.com"
         );
 
-// 🔹 Execução da busca
-        List<Anuncio> resultados = comprador.buscarAnuncios(anuncios);
+        System.out.println("Configuração da busca:");
+        System.out.println("- Tipo de imóvel: Casa");
+        System.out.println("- Tipo negociação: VENDA");
+        System.out.println("- Preço mínimo: R$ 300000");
 
-// 🔹 Exibição dos resultados
-        System.out.println("\n🔎 Resultados encontrados para " + comprador.getNome());
+        List<Anuncio> resultadosFiltrados =
+                compradorFiltrado.buscarAnuncios(anunciosParaBusca);
 
-        for (Anuncio a : resultados) {
-            System.out.println("----------------------------------");
-            System.out.println("Título: " + a.getTitulo());
-            System.out.println("Tipo imóvel: " + a.getItem().getTipo());
-            System.out.println("Preço: R$ " + a.getPreco());
-            System.out.println("Tipo negociação: " + a.getTipoNegociacao());
-            System.out.println("Estado: " + a.getEstado().getClass().getSimpleName());
-        }
+        System.out.println("\nResultados encontrados: " + resultadosFiltrados.size());
 
+        resultadosFiltrados.forEach(a ->
+                System.out.println("✔ " + a.getTitulo()
+                        + " | Preço: R$ " + a.getPreco()
+                        + " | Estado: " + a.getEstado().getClass().getSimpleName())
+        );
 
-
-
-
-
-
-
-
-
-
-
-        System.out.println("\n===== FIM DA SIMULAÇÃO =====");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

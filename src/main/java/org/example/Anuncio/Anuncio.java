@@ -86,4 +86,17 @@ public class Anuncio {
     public void suspender() {
         estado.suspender(this);
     }
+
+    public void vender() {
+        estado.vender(this);
+    }
+
+    public Anunciavel getImovel() {
+        return item;
+    }
+
+    public String getTipoImovel() {
+        return item.getTipo();
+    }
+
 }

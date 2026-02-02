@@ -15,8 +15,7 @@ public class VerificadorFotos extends ModeradorBase {
             throw new RuntimeException("❌ Anúncio precisa de ao menos uma foto.");
         }
 
-        // futuro: se tiver getQuantidadeFotos()
-        // if (anuncio.getQuantidadeFotos() > config.getLimiteFotos())
+
 
         passarParaProximo(anuncio);
     }

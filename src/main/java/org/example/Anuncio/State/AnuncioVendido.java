@@ -3,24 +3,9 @@ package org.example.Anuncio.State;
 import org.example.Anuncio.Anuncio;
 
 public class AnuncioVendido implements EstadoAnuncio {
-
     @Override
     public void enviarParaModeracao(Anuncio anuncio) {
-        throw new IllegalStateException("❌ Anúncio já publicado");
+        throw new IllegalStateException("Anuncio ja foi vendido");
     }
-
-    @Override
-    public void publicar(Anuncio anuncio) {
-        throw new IllegalStateException("⚠️ Já está publicado");
-    }
-
-    @Override
-    public void suspender(Anuncio anuncio) {
-        anuncio.setEstado(new AnuncioAtivo());
-    }
-
-    // 💡 Comportamentos futuros
-    public void aplicarFiltros() {
-        System.out.println("🔎 Aplicando filtros...");
-    }
+    // estado terminal
 }

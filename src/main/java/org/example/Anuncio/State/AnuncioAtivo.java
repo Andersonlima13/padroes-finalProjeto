@@ -18,4 +18,9 @@ public class AnuncioAtivo implements EstadoAnuncio {
     public void suspender(Anuncio anuncio) {
         anuncio.setEstado(new AnuncioSuspenso());
     }
+
+    @Override
+    public void vender(Anuncio anuncio) {
+        anuncio.setEstado(new AnuncioVendido());
+    }
 }
