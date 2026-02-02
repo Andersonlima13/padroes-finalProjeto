@@ -271,10 +271,7 @@ public class Main {
         Thread.sleep(1200);
 
 
-
-
-
-// =====================================================
+        // =====================================================
 // =====================================================
 // RF06 - DECORATOR (Busca Avançada COM filtros)
 // =====================================================
@@ -313,6 +310,35 @@ public class Main {
         resultadosFiltrados.forEach(a ->
                 System.out.println("✔ " + a.getTitulo()
                         + " | Preço: R$ " + a.getPreco()
+                        + " | Estado: " + a.getEstado().getClass().getSimpleName())
+        );
+
+
+
+        // =====================================================
+// RF06 - DECORATOR (Busca SEM filtros)
+// =====================================================
+        System.out.println("\n📋 RF06 - Busca sem filtros (BuscaBase)");
+
+        FiltroBusca buscaSemFiltro = new BuscaBase();
+
+        ServicoBusca servicoBuscaSimples = new ServicoBusca(buscaSemFiltro);
+
+        Comprador compradorSimples = new Comprador(
+                servicoBuscaSimples,
+                "Visitante",
+                "visitante@email.com"
+        );
+
+        List<Anuncio> todosResultados =
+                compradorSimples.buscarAnuncios(anunciosParaBusca);
+
+        System.out.println("Resultados encontrados: " + todosResultados.size());
+
+        todosResultados.forEach(a ->
+                System.out.println("✔ " + a.getTitulo()
+                        + " | Tipo: " + a.getImovel().getTipo()
+                        + " | Negociação: " + a.getTipoNegociacao()
                         + " | Estado: " + a.getEstado().getClass().getSimpleName())
         );
 
