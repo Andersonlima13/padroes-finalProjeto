@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.Anuncio.FiltroDeBusca.*;
 import org.example.Usuario.*;
 import org.example.Pagamento.*;
 import org.example.Anuncio.*;
@@ -158,6 +159,76 @@ public class Main {
                     a.getAnunciante().getNome());
         }
 
+
+        // =====================================================
+// 9️⃣ BUSCA DE USUÁRIO COMUM (DECORATOR)
+// =====================================================
+
+        System.out.println("\n===== BUSCA DE ANÚNCIOS (USUÁRIO COMUM) =====");
+
+// 🔹 Montagem dos filtros (Decorator)
+        FiltroBusca filtroBusca = new FiltroPrecoMinimo(
+                new FiltroPrecoMaximo(
+                        new FiltroPorImovel(
+                                new BuscaBase(),
+                                "Casa"
+                        ),
+                        500_000
+                ),
+                300_000
+        );
+
+// 🔹 Serviço de busca
+        ServicoBusca servicoBusca = new ServicoBusca(filtroBusca);
+
+// 🔹 Usuário comum
+        Comprador comprador = new Comprador(
+                servicoBusca,
+                "Carlos Comprador",
+                "carlos@email.com"
+        );
+
+// 🔹 Execução da busca
+        List<Anuncio> resultados = comprador.buscarAnuncios(anuncios);
+
+// 🔹 Exibição dos resultados
+        System.out.println("\n🔎 Resultados encontrados para " + comprador.getNome());
+
+        for (Anuncio a : resultados) {
+            System.out.println("----------------------------------");
+            System.out.println("Título: " + a.getTitulo());
+            System.out.println("Tipo imóvel: " + a.getItem().getTipo());
+            System.out.println("Preço: R$ " + a.getPreco());
+            System.out.println("Tipo negociação: " + a.getTipoNegociacao());
+            System.out.println("Estado: " + a.getEstado().getClass().getSimpleName());
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         System.out.println("\n===== FIM DA SIMULAÇÃO =====");
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
