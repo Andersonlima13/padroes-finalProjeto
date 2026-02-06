@@ -69,6 +69,19 @@ public class ConfiguracaoSistema {
         propriedades.setProperty("preco.aluguel.min", "100");
         propriedades.setProperty("preco.max", "500000000");
 
+        propriedades.setProperty("imovel.casa.titulo", "Casa comum com quintal");
+        propriedades.setProperty("imovel.casa.possuiQuintal", "true");
+
+
+        propriedades.setProperty("imovel.apartamento.titulo", "Apartamento Central");
+        propriedades.setProperty("imovel.apartamento.quartos", "3");
+        propriedades.setProperty("imovel.apartamento.possuiElevador", "true");
+
+
+        propriedades.setProperty("imovel.terreno.titulo", "Terreno simples");
+        propriedades.setProperty("imovel.terreno.area", "100");
+
+
         // Moderação
         propriedades.setProperty(
                 "moderacao.termos",
@@ -77,6 +90,14 @@ public class ConfiguracaoSistema {
 
         // Notificação
         propriedades.setProperty("notificacao.canal", "EMAIL");
+
+
+
+        // casa
+
+        // Imóveis - Casa
+
+
     }
 
     // ================== GETTERS ==================
@@ -113,6 +134,68 @@ public class ConfiguracaoSistema {
         return getDouble("preco.max", 500000000);
     }
 
+
+    public String getCasaTituloPadrao() {
+        return propriedades.getProperty(
+                "imovel.casa.titulo",
+                "Casa titulo"
+        );
+    }
+
+
+
+
+    public boolean isCasaPossuiQuintalPadrao() {
+        return Boolean.parseBoolean(
+                propriedades.getProperty(
+                        "imovel.casa.possuiQuintal",
+                        "true"
+                )
+        );
+    }
+
+    public String getApartamentoTituloPadrao() {
+        return propriedades.getProperty(
+                "imovel.apartamento.titulo",
+                "Apartamento"
+        );
+    }
+
+    public boolean isApartamentoPossuiElevadorPadrao() {
+        return Boolean.parseBoolean(
+                propriedades.getProperty(
+                        "imovel.apartamento.possuiElevador",
+                        "false"
+                )
+        );
+    }
+
+    public int getApartamentoQuartosPadrao() {
+        return getInt(
+                "imovel.apartamento.quartos",
+                2
+        );
+    }
+
+
+    public String getTerrenoTituloPadrao() {
+        return propriedades.getProperty(
+                "imovel.terreno.titulo",
+                "Terreno"
+        );
+    }
+
+    public int getTerrenoAreaPadrao() {
+        return getInt(
+                "imovel.terreno.area",
+                0
+        );
+    }
+
+
+
+
+
     public List<String> getTermosProibidos() {
         String termos = propriedades.getProperty("moderacao.termos", "");
         return Arrays.stream(termos.split(","))
@@ -128,6 +211,11 @@ public class ConfiguracaoSistema {
     public boolean isCarregadoComSucesso() {
         return carregadoComSucesso;
     }
+
+
+
+
+
 
     // ================== AUX ==================
 

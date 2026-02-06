@@ -11,6 +11,7 @@ import org.example.Config.ConfiguracaoSistema;
 import org.example.Imovel.Factory.*;
 import org.example.Imovel.Imovel;
 
+import org.example.Imovel.ImovelFactory;
 import org.example.Pagamento.*;
 import org.example.Usuario.*;
 
@@ -25,15 +26,36 @@ public class Main {
         // =====================================================
         // RF07 - SINGLETON (Configurações do Sistema)
         // =====================================================
+
+        Thread.sleep(1200);
+
+
         System.out.println("⚙️ RF07 - Singleton (Configurações)");
 
-        ConfiguracaoSistema cfg = ConfiguracaoSistema.getInstancia();
+        ConfiguracaoSistema config = ConfiguracaoSistema.getInstancia();
 
-        System.out.println("Sistema carregado: " + cfg.isCarregadoComSucesso());
-        System.out.println("Preço mínimo venda: " + cfg.getPrecoMinVenda());
-        System.out.println("Preço mínimo aluguel: " + cfg.getPrecoMinAluguel());
-        System.out.println("Termos proibidos: " + cfg.getTermosProibidos());
-        System.out.println("Canal notificação padrão: " + cfg.getCanalNotificacaoPadrao());
+        System.out.println("Sistema carregado: " + config.isCarregadoComSucesso());
+        System.out.println("Preço mínimo venda: " + config.getPrecoMinVenda());
+        System.out.println("Preço mínimo aluguel: " + config.getPrecoMinAluguel());
+        System.out.println("Termos proibidos: " + config.getTermosProibidos());
+        System.out.println("Canal notificação padrão: " + config.getCanalNotificacaoPadrao());
+
+        System.out.println("Tipo de Casa Padrão : " + config.getCasaTituloPadrao());
+        System.out.println("Quintal de Casa Padrão : " + config.isCasaPossuiQuintalPadrao());
+
+        System.out.println("Titulo de Apartamento Padrão : " + config.getApartamentoTituloPadrao());
+        System.out.println("Numero de quartos apartamento Padrão : " + config.getApartamentoQuartosPadrao());
+        System.out.println("Elevador padrão de apartamento : " + config.isApartamentoPossuiElevadorPadrao());
+
+        System.out.println("Terreno padrão   : " + config.getTerrenoTituloPadrao());
+        System.out.println("Terreno Area padrão  : " + config.getTerrenoAreaPadrao());
+
+
+
+
+
+
+
 
         Thread.sleep(1200);
 
@@ -59,9 +81,6 @@ public class Main {
 
         Thread.sleep(1200);
 
-        // =====================================================
-        // RF01 - ANUNCIANTES
-        // =====================================================
         System.out.println("\n🧑 RF01 - Anunciantes");
 
         Anunciante proprietario = new Proprietario(
@@ -85,23 +104,106 @@ public class Main {
         Thread.sleep(1200);
 
         // =====================================================
-        // RF02 - FACTORY METHOD (Imóveis padrão)
+        // RF01 E RF02 - FACTORY METHOD  (Imóveis padrão)
         // =====================================================
         System.out.println("\n🏠 RF02 - Factory Method");
+
+
+        // CRIANDO IMOVEIS PADRONIZADOS
 
         Imovel casaPadrao = new CasaFactory().criarImovel();
         Imovel apPadrao = new ApartamentoFactory().criarImovel();
         Imovel terrenoPadrao = new TerrenoFactory().criarImovel();
 
+        // Criando factorys personalizadas
+        CasaFactory factoryCasa = new CasaFactory();
+
+        Imovel casaCustom1 = factoryCasa.criarImovel(
+                "Casa 2 quartos com quintal",
+                true
+        );
+
+        Imovel casaCustom2 = factoryCasa.criarImovel(
+                "Casa 3 quartos sem quintal",
+                false
+        );
+
+        Imovel casaCustom3 = factoryCasa.criarImovel(
+                "Casa 4 quartos sem quintal",
+                false
+        );
+
+        ApartamentoFactory factoryApartamento = new ApartamentoFactory();
+
+        Imovel apartamentoCustom1 = factoryApartamento.criarImovel(
+                "apartamento 2 quartos",
+                2,
+                false
+        );
+
+        Imovel apartamentoCustom2 = factoryApartamento.criarImovel(
+                "apartamento 3 quartos",
+                3,
+                false
+        );
+
+
+        Imovel apartamentoCustom3 = factoryApartamento.criarImovel(
+                "apartamento 4 quartos",
+                4,
+                true
+        );
+
+
+        TerrenoFactory factoryTerreno = new TerrenoFactory();
+
+        Imovel terrenoCustom1 = factoryTerreno.criarImovel(
+                "Terreno de 500",
+                500
+        );
+
+        Imovel terrenoCustom2 = factoryTerreno.criarImovel(
+                "Terreno de 600",
+                600
+        );
+
+        Imovel terrenoCustom3 = factoryTerreno.criarImovel(
+                "Terreno de 700",
+                700
+        );
+
+
+
+        System.out.println("✔ " + casaPadrao.getTitulo() + " | Tipo: Casa padronizada");
+
+
         System.out.println("Imóveis criados via Factory:");
-        System.out.println("✔ " + casaPadrao.getTitulo() + " | Tipo: Casa");
-        System.out.println("✔ " + apPadrao.getTitulo() + " | Tipo: Apartamento");
-        System.out.println("✔ " + terrenoPadrao.getTitulo() + " | Tipo: Terreno");
+        System.out.println("✔ " + casaCustom1.getTitulo() + " | Tipo: casaCustom1");
+        System.out.println("✔ " + casaCustom2.getTitulo() + " | Tipo: casaCustom2 ");
+        System.out.println("✔ " + casaCustom3.getTitulo() + " | Tipo: casaCustom3");
+
+
+        System.out.println("✔ " + apPadrao.getTitulo() + " | Tipo: Apartamento Padronizado");
+
+
+        System.out.println("✔ " + apartamentoCustom1.getTitulo() + " | Tipo: Apartamento Custom");
+        System.out.println("✔ " + apartamentoCustom2.getTitulo() + " | Tipo: Apartamento Custom");
+        System.out.println("✔ " + apartamentoCustom3.getTitulo()+ " | Tipo: Apartamento Custom");
+
+
+
+
+        System.out.println("✔ " + terrenoPadrao.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno Padronizado");
+
+        System.out.println("✔ " + terrenoCustom1.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno custom 1");
+        System.out.println("✔ " + terrenoCustom2.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno custom 2");
+        System.out.println("✔ " + terrenoCustom3.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno custom  3" );
+
 
         Thread.sleep(1200);
 
         // =====================================================
-        // OBSERVER (Publisher)
+        // OBSERVER (Publisher) --- adcionando notificadores
         // =====================================================
         AnuncioPublisher publisher = new AnuncioPublisher();
         publisher.adicionar(new NotificadorWhatsApp());
@@ -110,6 +212,10 @@ public class Main {
         // =====================================================
         // RF01 + RF02 - CRIAÇÃO DOS ANÚNCIOS
         // =====================================================
+
+
+
+
         Anuncio anuncioCasa = new Anuncio(
                 casaPadrao,
                 casaPadrao.getTitulo(),
@@ -118,6 +224,38 @@ public class Main {
                 proprietario,
                 publisher
         );
+
+
+        Anuncio anuncioCasaCustom1 = new Anuncio(
+                casaCustom1,
+                casaCustom1.getTitulo(),
+                420_000,
+                TipoNegociacao.VENDA,
+                proprietario,
+                publisher
+        );
+
+        Anuncio anuncioCasaCustom2 = new Anuncio(
+                casaCustom2,
+                casaCustom2.getTitulo(),
+                420_000,
+                TipoNegociacao.VENDA,
+                proprietario,
+                publisher
+        );
+
+
+        Anuncio anuncioCasaCustom3 = new Anuncio(
+                casaCustom3,
+                casaCustom3.getTitulo(),
+                420_000,
+                TipoNegociacao.VENDA,
+                proprietario,
+                publisher
+        );
+
+
+
 
         Anuncio anuncioApartamento = new Anuncio(
                 apPadrao,
@@ -137,62 +275,97 @@ public class Main {
                 publisher
         );
 
+
+
+
+
+
+
         System.out.println("Anúncios criados:");
+
         System.out.println("✔ " + anuncioCasa.getTitulo()
-                + " | VENDA | R$ 420000 | Estado: "
                 + anuncioCasa.getEstado().getClass().getSimpleName());
 
         System.out.println("✔ " + anuncioApartamento.getTitulo()
-                + " | ALUGUEL | R$ 2500 | Estado: "
                 + anuncioApartamento.getEstado().getClass().getSimpleName());
 
         System.out.println("✔ " + anuncioTerreno.getTitulo()
-                + " | VENDA | R$ 300000 | Estado: "
                 + anuncioTerreno.getEstado().getClass().getSimpleName());
 
-        List<Anuncio> anuncios = List.of(
-                anuncioCasa,
-                anuncioApartamento,
-                anuncioTerreno
-        );
+
+        System.out.println("✔ " + anuncioCasaCustom1.getTitulo()
+                + anuncioTerreno.getEstado().getClass().getSimpleName());
+
+        System.out.println("✔ " + anuncioCasaCustom2.getTitulo()
+                + anuncioTerreno.getEstado().getClass().getSimpleName());
+
+        System.out.println("✔ " + anuncioCasaCustom3.getTitulo()
+                + anuncioTerreno.getEstado().getClass().getSimpleName());
+
+
+
+
 
         Thread.sleep(1200);
 
         // =====================================================
-        // RF03 - CHAIN OF RESPONSIBILITY (Publicação)
+        // RF03 RF04 - CHAIN OF RESPONSIBILITY + STATE (Publicação)
         // =====================================================
         System.out.println("\n🛂 RF03 - Publicação de Anúncios");
 
         ModeradorAnuncio verificadorFotos = new VerificadorFotos();
         ModeradorAnuncio verificadorPalavras = new VerificadorPalavras();
+        ModeradorAnuncio verificadorPreco = new VerificadorPreco();
 
         verificadorFotos.setProximo(verificadorPalavras);
+        verificadorPalavras.setProximo(verificadorPreco);
 
-        ServicoPublicacaoAnuncio publicador =
-                new ServicoPublicacaoAnuncio(verificadorFotos);
+        ServicoPublicacaoAnuncio publicador =  new ServicoPublicacaoAnuncio(verificadorFotos);
 
+
+        System.out.println("\n Demonstrando o ciclo de vida de um anuncio");
+
+        System.out.println("AnuncioCasaCustom1 Antes de publicar : " + anuncioCasaCustom1.
+                getEstado().getClass().getSimpleName());
+
+        publicador.publicar(anuncioCasaCustom1);
+
+
+        System.out.println("AnuncioCasaCustom1 dps de publicar estado : " + anuncioCasaCustom1.
+                getEstado().getClass().getSimpleName());;
+
+
+        publicador.publicar(anuncioCasaCustom2);
+        publicador.publicar(anuncioCasaCustom3);
         publicador.publicar(anuncioCasa);
         publicador.publicar(anuncioApartamento);
         publicador.publicar(anuncioTerreno);
+
+        System.out.println("Publicando demais anuncios :  " + anuncioCasaCustom2.getTitulo()
+                .getClass().getSimpleName()+ anuncioCasaCustom2.getEstado().getClass().getSimpleName());
+        System.out.println("Publicando demais anuncios :  " + anuncioCasaCustom3.getTitulo().getClass().getSimpleName()
+                + anuncioCasaCustom3.getEstado().getClass().getSimpleName());
+        System.out.println("Publicando demais anuncios :  " + anuncioCasa.getTitulo().getClass().getSimpleName()
+                + anuncioCasa.getEstado().getClass().getSimpleName());
+        System.out.println("Publicando demais anuncios :  " + anuncioApartamento.getTitulo().getClass().getSimpleName()
+                + anuncioApartamento.getEstado().getClass().getSimpleName());
+        System.out.println("Publicando demais anuncios :  " + anuncioTerreno.getTitulo().getClass().getSimpleName()
+                + anuncioTerreno.getEstado().getClass().getSimpleName());
+
+
+
+
+
 
         Thread.sleep(1200);
 
 
 
 
-        // =====================================================
-        // RF04 - STATE (Ciclo de Vida – sem transições ilegais)
-        // =====================================================
-        System.out.println("\n🔄 RF04 - State (Ciclo de Vida)");
 
-        System.out.println("Estado anúncio casa: " +
-                anuncioCasa.getEstado().getClass().getSimpleName());
 
-        System.out.println("Estado anúncio apartamento: " +
-                anuncioApartamento.getEstado().getClass().getSimpleName());
 
-        System.out.println("Estado anúncio terreno: " +
-                anuncioTerreno.getEstado().getClass().getSimpleName());
+
 
         Thread.sleep(1200);
 
@@ -201,9 +374,11 @@ public class Main {
         // =====================================================
         System.out.println("\n🏷️ RF03 - Encerramento de Anúncio");
 
+
+
         anuncioCasa.vender();
 
-        System.out.println("Novo estado anúncio casa: " +
+        System.out.println("Novo estado anúncio Casa: " +
                 anuncioCasa.getEstado().getClass().getSimpleName());
 
         Thread.sleep(1200);
@@ -213,14 +388,19 @@ public class Main {
         // =====================================================
         System.out.println("\n📢 RF05 - Observer em ação");
 
+
+        Imovel casaobserver = new CasaFactory().criarImovel();
+
         Anuncio anuncioObserver = new Anuncio(
-                casaPadrao,
-                "Casa Observer",
+                casaobserver,
+                "Casa Exemplo para observer",
                 500_000,
                 TipoNegociacao.VENDA,
                 proprietario,
                 publisher
         );
+
+
 
         anuncioObserver.enviarParaModeracao();
         anuncioObserver.publicar();
@@ -230,42 +410,15 @@ public class Main {
 
 
 
-        // =====================================================
-// RF01 + RF02 + RF03 - ANÚNCIOS ATIVOS PARA BUSCA (RF06)
-// =====================================================
-        System.out.println("\n🟢 Anúncios extras (ativos) para busca");
 
-// Reaproveitando factories existentes
-        Imovel casaBusca = new CasaFactory().criarImovel();
-        Imovel apBusca   = new ApartamentoFactory().criarImovel();
 
-// Criando anúncios
-        Anuncio anuncioCasaBusca = new Anuncio(
-                casaBusca,
-                "Casa Ativa para Busca",
-                380_000,
-                TipoNegociacao.VENDA,
-                proprietario,
-                publisher
-        );
+        // DEMONSTRAR O RF 06 --> Reunindo todos os anuncios criandos em uma lista
 
-        Anuncio anuncioApBusca = new Anuncio(
-                apBusca,
-                "Apartamento Ativo para Busca",
-                3_000,
-                TipoNegociacao.ALUGUEL,
-                corretor,
-                publisher
-        );
 
-// Publicando (ficam ATIVOS)
-        publicador.publicar(anuncioCasaBusca);
-        publicador.publicar(anuncioApBusca);
-
-// Lista final usada na busca
         List<Anuncio> anunciosParaBusca = List.of(
-                anuncioCasaBusca,
-                anuncioApBusca
+                anuncioCasaCustom1,
+                anuncioCasaCustom2,
+                anuncioCasaCustom3
         );
 
         Thread.sleep(1200);
@@ -284,18 +437,25 @@ public class Main {
                                         new BuscaBase(),
                                         "Casa"
                                 ),
-                                TipoNegociacao.VENDA
+                                TipoNegociacao.ALUGUEL
                         ),
                         300_000
                 );
 
+
+
         ServicoBusca servicoBuscaFiltrada = new ServicoBusca(filtroComDecorator);
+
+        // Usuario a filtrar a busca
 
         Comprador compradorFiltrado = new Comprador(
                 servicoBuscaFiltrada,
                 "Carlos Comprador",
                 "carlos@email.com"
         );
+
+
+        // filtros utilizados
 
         System.out.println("Configuração da busca:");
         System.out.println("- Tipo de imóvel: Casa");
@@ -316,8 +476,10 @@ public class Main {
 
 
         // =====================================================
-// RF06 - DECORATOR (Busca SEM filtros)
-// =====================================================
+        // RF06 - DECORATOR (Busca SEM filtros)
+        // =====================================================
+
+
         System.out.println("\n📋 RF06 - Busca sem filtros (BuscaBase)");
 
         FiltroBusca buscaSemFiltro = new BuscaBase();
