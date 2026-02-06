@@ -172,12 +172,12 @@ public class Main {
                 700
         );
 
+        System.out.println("Imóveis criados via Factory:");
 
-
+        System.out.println("\n ------------------------------------------------------------ ");
         System.out.println("✔ " + casaPadrao.getTitulo() + " | Tipo: Casa padronizada");
 
 
-        System.out.println("Imóveis criados via Factory:");
         System.out.println("✔ " + casaCustom1.getTitulo() + " | Tipo: casaCustom1");
         System.out.println("✔ " + casaCustom2.getTitulo() + " | Tipo: casaCustom2 ");
         System.out.println("✔ " + casaCustom3.getTitulo() + " | Tipo: casaCustom3");
@@ -186,19 +186,20 @@ public class Main {
         System.out.println("✔ " + apPadrao.getTitulo() + " | Tipo: Apartamento Padronizado");
 
 
-        System.out.println("✔ " + apartamentoCustom1.getTitulo() + " | Tipo: Apartamento Custom");
-        System.out.println("✔ " + apartamentoCustom2.getTitulo() + " | Tipo: Apartamento Custom");
-        System.out.println("✔ " + apartamentoCustom3.getTitulo()+ " | Tipo: Apartamento Custom");
+        System.out.println("✔ " + apartamentoCustom1.getTitulo()  + " | Tipo: Apartamento Custom1");
+        System.out.println("✔ " + apartamentoCustom2.getTitulo()  + " | Tipo: Apartamento Custom2");
+        System.out.println("✔ " + apartamentoCustom3.getTitulo() + " | Tipo: Apartamento Custom3");
 
 
 
 
-        System.out.println("✔ " + terrenoPadrao.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno Padronizado");
+        System.out.println("✔ " + terrenoPadrao.getTitulo()+ " | Tipo: Terreno Padronizado");
 
-        System.out.println("✔ " + terrenoCustom1.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno custom 1");
-        System.out.println("✔ " + terrenoCustom2.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno custom 2");
-        System.out.println("✔ " + terrenoCustom3.getTitulo().getClass().getSimpleName() + " | Tipo: Terreno custom  3" );
+        System.out.println("✔ " + terrenoCustom1.getTitulo()+ " | Tipo: Terreno custom 1");
+        System.out.println("✔ " + terrenoCustom2.getTitulo() + " | Tipo: Terreno custom 2");
+        System.out.println("✔ " + terrenoCustom3.getTitulo()+ " | Tipo: Terreno custom  3" );
 
+        System.out.println("\n ------------------------------------------------------------ ");
 
         Thread.sleep(1200);
 
@@ -229,7 +230,7 @@ public class Main {
         Anuncio anuncioCasaCustom1 = new Anuncio(
                 casaCustom1,
                 casaCustom1.getTitulo(),
-                420_000,
+                420000,
                 TipoNegociacao.VENDA,
                 proprietario,
                 publisher
@@ -238,7 +239,7 @@ public class Main {
         Anuncio anuncioCasaCustom2 = new Anuncio(
                 casaCustom2,
                 casaCustom2.getTitulo(),
-                420_000,
+                500000,
                 TipoNegociacao.VENDA,
                 proprietario,
                 publisher
@@ -248,7 +249,7 @@ public class Main {
         Anuncio anuncioCasaCustom3 = new Anuncio(
                 casaCustom3,
                 casaCustom3.getTitulo(),
-                420_000,
+                600000,
                 TipoNegociacao.VENDA,
                 proprietario,
                 publisher
@@ -283,24 +284,19 @@ public class Main {
 
         System.out.println("Anúncios criados:");
 
-        System.out.println("✔ " + anuncioCasa.getTitulo()
-                + anuncioCasa.getEstado().getClass().getSimpleName());
-
-        System.out.println("✔ " + anuncioApartamento.getTitulo()
-                + anuncioApartamento.getEstado().getClass().getSimpleName());
-
-        System.out.println("✔ " + anuncioTerreno.getTitulo()
-                + anuncioTerreno.getEstado().getClass().getSimpleName());
+        System.out.println("✔ " + anuncioCasa.getTitulo());
 
 
-        System.out.println("✔ " + anuncioCasaCustom1.getTitulo()
-                + anuncioTerreno.getEstado().getClass().getSimpleName());
+        System.out.println("✔ " + anuncioApartamento.getTitulo());
 
-        System.out.println("✔ " + anuncioCasaCustom2.getTitulo()
-                + anuncioTerreno.getEstado().getClass().getSimpleName());
+        System.out.println("✔ " + anuncioTerreno.getTitulo());
 
-        System.out.println("✔ " + anuncioCasaCustom3.getTitulo()
-                + anuncioTerreno.getEstado().getClass().getSimpleName());
+
+        System.out.println("✔ " + anuncioCasaCustom1.getTitulo());
+
+        System.out.println("✔ " + anuncioCasaCustom2.getTitulo());
+
+        System.out.println("✔ " + anuncioCasaCustom3.getTitulo());
 
 
 
@@ -311,6 +307,7 @@ public class Main {
         // =====================================================
         // RF03 RF04 - CHAIN OF RESPONSIBILITY + STATE (Publicação)
         // =====================================================
+
         System.out.println("\n🛂 RF03 - Publicação de Anúncios");
 
         ModeradorAnuncio verificadorFotos = new VerificadorFotos();
@@ -322,8 +319,9 @@ public class Main {
 
         ServicoPublicacaoAnuncio publicador =  new ServicoPublicacaoAnuncio(verificadorFotos);
 
-
+        System.out.println("\n ");
         System.out.println("\n Demonstrando o ciclo de vida de um anuncio");
+        System.out.println("\n ----------------------------------------------- ");
 
         System.out.println("AnuncioCasaCustom1 Antes de publicar : " + anuncioCasaCustom1.
                 getEstado().getClass().getSimpleName());
@@ -341,16 +339,15 @@ public class Main {
         publicador.publicar(anuncioApartamento);
         publicador.publicar(anuncioTerreno);
 
-        System.out.println("Publicando demais anuncios :  " + anuncioCasaCustom2.getTitulo()
-                .getClass().getSimpleName()+ anuncioCasaCustom2.getEstado().getClass().getSimpleName());
-        System.out.println("Publicando demais anuncios :  " + anuncioCasaCustom3.getTitulo().getClass().getSimpleName()
-                + anuncioCasaCustom3.getEstado().getClass().getSimpleName());
-        System.out.println("Publicando demais anuncios :  " + anuncioCasa.getTitulo().getClass().getSimpleName()
-                + anuncioCasa.getEstado().getClass().getSimpleName());
-        System.out.println("Publicando demais anuncios :  " + anuncioApartamento.getTitulo().getClass().getSimpleName()
-                + anuncioApartamento.getEstado().getClass().getSimpleName());
-        System.out.println("Publicando demais anuncios :  " + anuncioTerreno.getTitulo().getClass().getSimpleName()
-                + anuncioTerreno.getEstado().getClass().getSimpleName());
+        System.out.println("\n ----------------------------------------------- ");
+
+
+        System.out.println("Publicando demais anuncios :  " +  anuncioCasaCustom2.getTitulo());
+
+        System.out.println("Publicando demais anuncios :  " + anuncioCasaCustom3.getTitulo());
+        System.out.println("Publicando demais anuncios :  " + anuncioCasa.getTitulo());
+        System.out.println("Publicando demais anuncios :  " + anuncioApartamento.getTitulo());
+        System.out.println("Publicando demais anuncios :  " + anuncioTerreno.getTitulo());
 
 
 
@@ -437,9 +434,9 @@ public class Main {
                                         new BuscaBase(),
                                         "Casa"
                                 ),
-                                TipoNegociacao.ALUGUEL
+                                TipoNegociacao.VENDA
                         ),
-                        300_000
+                        500000
                 );
 
 

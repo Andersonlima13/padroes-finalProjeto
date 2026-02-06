@@ -2,7 +2,7 @@
 
 > Projeto acadêmico desenvolvido para a disciplina **Padrões de Projeto**, com foco na aplicação prática dos principais padrões GoF em um sistema orientado a objetos.
 
----
+-----
 
 
 📘 Disciplina: Padrões de Projeto
